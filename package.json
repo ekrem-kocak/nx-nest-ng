@@ -1,5 +1,5 @@
 {
-  "name": "@nx-nest-ng-store/source",
+  "name": "@nx-nest-ng/source",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -24,6 +24,8 @@
     "@nestjs/common": "^11.0.0",
     "@nestjs/core": "^11.0.0",
     "@nestjs/platform-express": "^11.0.0",
+    "@nestjs/swagger": "^11.2.1",
+    "@prisma/client": "^6.17.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~7.8.0",
     "zone.js": "~0.15.0"
@@ -63,6 +65,7 @@
     "jest-util": "^29.7.0",
     "nx": "21.6.5",
     "prettier": "^2.6.2",
+    "prisma": "^6.17.1",
     "ts-jest": "^29.1.0",
     "ts-node": "10.9.1",
     "tslib": "^2.3.0",
