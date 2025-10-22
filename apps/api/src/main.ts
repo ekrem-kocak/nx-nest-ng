@@ -3,7 +3,7 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
@@ -13,6 +13,15 @@ async function bootstrap() {
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3000;
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // allow only properties defined in DTO
+      forbidNonWhitelisted: true, // throw error if properties are not in DTO
+      transform: true, // auto-transform payloads to DTO types
+      transformOptions: { enableImplicitConversion: true },
+    })
+  );
 
   const config = new DocumentBuilder()
     .setTitle('NestJS API')
