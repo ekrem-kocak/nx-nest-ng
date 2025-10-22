@@ -10,7 +10,9 @@
     "start:angular": "nx serve store-admin-portal",
     "build:angular": "nx build store-admin-portal",
     "lint:angular": "nx lint store-admin-portal",
-    "test:angular": "nx test store-admin-portal"
+    "test:angular": "nx test store-admin-portal",
+    "pre-commit": "pnpm build:api && pnpm build:angular",
+    "prepare": "husky"
   },
   "private": true,
   "dependencies": {
@@ -68,6 +70,7 @@
     "angular-eslint": "^20.3.0",
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^10.0.0",
+    "husky": "^9.1.7",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "jest-environment-node": "^29.7.0",
