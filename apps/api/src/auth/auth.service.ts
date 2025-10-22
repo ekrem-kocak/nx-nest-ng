@@ -69,8 +69,8 @@ export class AuthService {
           email: user.email,
         },
         {
-          secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
-          expiresIn: this.configService.get<number>('JWT_ACCESS_EXPIRES_IN'),
+          secret: this.configService.get<string>('jwt.accessSecret'),
+          expiresIn: this.configService.get<number>('jwt.accessExpiration'),
         }
       ),
 
@@ -80,8 +80,8 @@ export class AuthService {
           sub: user.id,
         },
         {
-          secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
-          expiresIn: this.configService.get<number>('JWT_REFRESH_EXPIRES_IN'),
+          secret: this.configService.get<string>('jwt.refreshSecret'),
+          expiresIn: this.configService.get<number>('jwt.refreshExpiration'),
         }
       ),
     ]);
