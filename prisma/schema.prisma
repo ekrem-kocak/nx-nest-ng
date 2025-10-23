@@ -30,7 +30,8 @@ model User {
 
   // Bir kullanıcı birden fazla workspace'e üye olabilir.
   // Bu, WorkspaceMember modeli aracılığıyla kurulan ilişkidir
-  workspaces WorkspaceMember[]
+  workspaces   WorkspaceMember[]
+  RefreshToken RefreshToken[]
 }
 
 // "Kiracı" modelimiz. Her şirket/proje bir Workspace'tir.
@@ -68,4 +69,20 @@ model WorkspaceMember {
 
   // Bir kullanıcı bir workspace'e sadece bir kez üye olabilir
   @@unique([userId, workspaceId])
+}
+
+model RefreshToken {
+  id        Int       @id @default(autoincrement())
+  jti       String    @unique
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String
+  userAgent String?
+  ip        String?
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([userId])
 }
