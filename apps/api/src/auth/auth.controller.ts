@@ -1,10 +1,23 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+// apps/api/src/auth/auth.controller.ts
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Request, Response } from 'express';
 import { AuthResponse, AuthService } from './auth.service';
-import { LoginUserDto } from './dto/login-user.dto';
-import { SignupUserDto } from './dto/signup-user.dto';
+import { SignInUserDto } from './dto/login-user.dto';
+import { SignUpUserDto } from './dto/signup-user.dto';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 
-@ApiTags('Authentication') // Swagger'da 'Authentication' grubu oluşturur
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -12,40 +25,70 @@ export class AuthController {
   @Post('signup')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Create a new user' })
-  @ApiBody({ type: SignupUserDto })
-  @ApiResponse({
-    status: 201,
-    description: 'User created successfully and tokens returned.',
-  })
-  @ApiResponse({
-    status: 409,
-    description: 'Email address already in use (Conflict).',
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid data (Validation Error).',
-  })
-  async signUp(@Body() signupUserDto: SignupUserDto): Promise<AuthResponse> {
-    return this.authService.signUp(signupUserDto);
+  @ApiBody({ type: SignUpUserDto })
+  async signUp(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+    @Body() dto: SignUpUserDto
+  ) {
+    const { accessToken, cookie } = await this.authService.signUp(
+      dto.email,
+      dto.password,
+      req.headers['user-agent'],
+      req.ip
+    );
+
+    this.setRefreshCookie(res, cookie.value);
+    return { accessToken };
   }
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'User login' })
-  @ApiBody({ type: LoginUserDto })
-  @ApiResponse({
-    status: 200,
-    description: 'Login successful and tokens returned.',
-  })
-  @ApiResponse({
-    status: 401,
-    description: 'Invalid email or password (Unauthorized).',
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid data (Validation Error).',
-  })
-  async login(@Body() loginUserDto: LoginUserDto): Promise<AuthResponse> {
-    return this.authService.login(loginUserDto);
+  @ApiBody({ type: SignInUserDto })
+  async signIn(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+    @Body() dto: SignInUserDto
+  ) {
+    const { accessToken, cookie } = await this.authService.signIn(
+      dto.email,
+      dto.password,
+      req.headers['user-agent'],
+      req.ip
+    );
+    this.setRefreshCookie(res, cookie.value);
+    return { accessToken };
+  }
+
+  @Post('refresh')
+  @UseGuards(JwtRefreshGuard)
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Refresh access token' })
+  async refresh(@Req() req: Request): Promise<AuthResponse> {
+    return this.authService.refreshToken(
+      req.cookies.rt,
+      req.headers['user-agent'],
+      req.ip
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT-auth')
+  @Post('logout')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'User logout' })
+  async logout(@Req() req: Request): Promise<void> {
+    const refreshToken = req.cookies?.rt;
+    return this.authService.logout(refreshToken);
+  }
+
+  private setRefreshCookie(res: Response, value: string) {
+    res.cookie('rt', value, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
   }
 }
