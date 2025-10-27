@@ -1,22 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { AuthModule } from '../auth/auth.module';
-import appConfig from '../config/app.config';
-import databaseConfig from '../config/database.config';
-import jwtConfig from '../config/jwt.config';
-import securityConfig from '../config/security.config';
-import { PrismaModule } from '../prisma/prisma.module';
+
+import { CoreModule } from '@nx-nest-ng/core';
+import { FeatureAuthModule } from '@nx-nest-ng/feature-auth';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
-      load: [appConfig, databaseConfig, jwtConfig, securityConfig],
-    }),
-
-    AuthModule,
-    PrismaModule,
-  ],
+  imports: [FeatureAuthModule, CoreModule],
 })
 export class AppModule {}

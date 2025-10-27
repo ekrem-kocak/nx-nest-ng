@@ -5,10 +5,10 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { PrismaService } from '@nx-nest-ng/core';
+import { UsersService } from '@nx-nest-ng/feature-users';
 import * as bcrypt from 'bcrypt';
 import { randomUUID } from 'crypto';
-import { PrismaService } from '../prisma/prisma.service';
-import { UsersService } from '../users/users.service';
 
 // Define the response interface for the auth service
 export interface AuthResponse {

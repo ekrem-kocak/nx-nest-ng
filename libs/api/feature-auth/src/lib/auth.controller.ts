@@ -10,10 +10,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { SignInUserDto, SignUpUserDto } from '@nx-nest-ng/dto';
 import { Request, Response } from 'express';
 import { AuthResponse, AuthService } from './auth.service';
-import { SignInUserDto } from './dto/login-user.dto';
-import { SignUpUserDto } from './dto/signup-user.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 
@@ -86,7 +85,7 @@ export class AuthController {
   private setRefreshCookie(res: Response, value: string) {
     res.cookie('rt', value, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: process.env['NODE_ENV'] === 'production',
       sameSite: 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
