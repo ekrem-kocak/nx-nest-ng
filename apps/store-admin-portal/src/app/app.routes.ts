@@ -5,7 +5,7 @@ export const appRoutes: Route[] = [
   {
     path: 'auth',
     loadChildren: () =>
-      import('../features/auth/auth.routes').then((m) => m.authRoutes),
+      import('@nx-nest-ng/eku-store-feature-auth').then((m) => m.authRoutes),
   },
   {
     path: '',

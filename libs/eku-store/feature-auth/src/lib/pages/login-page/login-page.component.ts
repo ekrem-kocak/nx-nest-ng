@@ -3,11 +3,13 @@ import { LoginFormComponent } from '../../components/login-form/login-form.compo
 import { LoginRequest } from '../../models/auth.model';
 
 @Component({
-  selector: 'app-login-page',
+  selector: 'eku-store-login-page',
   standalone: true,
   imports: [LoginFormComponent],
   template: `
-    <app-login-form (loginSubmit)="onLoginSubmit($event)"></app-login-form>
+    <eku-store-login-form
+      (loginSubmit)="onLoginSubmit($event)"
+    ></eku-store-login-form>
   `,
   styles: [
     `

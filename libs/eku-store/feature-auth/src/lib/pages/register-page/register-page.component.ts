@@ -3,13 +3,13 @@ import { RegisterFormComponent } from '../../components/register-form/register-f
 import { RegisterRequest } from '../../models/auth.model';
 
 @Component({
-  selector: 'app-register-page',
+  selector: 'eku-store-register-page',
   standalone: true,
   imports: [RegisterFormComponent],
   template: `
-    <app-register-form
+    <eku-store-register-form
       (registerSubmit)="onRegisterSubmit($event)"
-    ></app-register-form>
+    ></eku-store-register-form>
   `,
   styles: [
     `

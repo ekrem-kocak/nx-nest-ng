@@ -7,15 +7,16 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule } from '@angular/router';
-import { LoginRequest } from '../../models/auth.model';
+import { RegisterRequest } from '../../models/auth.model';
 
 @Component({
-  selector: 'app-login-form',
+  selector: 'eku-store-register-form',
   standalone: true,
   imports: [
     CommonModule,
@@ -26,15 +27,26 @@ import { LoginRequest } from '../../models/auth.model';
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    MatCheckboxModule,
   ],
   template: `
     <div class="space-y-6">
       <div class="text-center">
-        <h2 class="text-2xl font-bold text-gray-800 mb-2">Sign In</h2>
-        <p class="text-gray-600">Sign in to your account</p>
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">Sign Up</h2>
+        <p class="text-gray-600">Create a new account</p>
       </div>
 
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-4">
+      <form
+        [formGroup]="registerForm"
+        (ngSubmit)="onSubmit()"
+        class="space-y-4"
+      >
+        <mat-form-field>
+          <mat-label>Full Name</mat-label>
+          <input matInput type="text" formControlName="name" />
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+
         <mat-form-field>
           <mat-label>Email</mat-label>
           <input
@@ -50,11 +62,10 @@ import { LoginRequest } from '../../models/auth.model';
           <mat-label>Password</mat-label>
           <input
             matInput
-            [type]="hidePassword ? 'password' : 'text'"
+            type="password"
             formControlName="password"
-            autocomplete="current-password"
+            autocomplete="new-password"
           />
-          <mat-icon matSuffix>lock</mat-icon>
         </mat-form-field>
 
         <button
@@ -62,20 +73,20 @@ import { LoginRequest } from '../../models/auth.model';
           color="primary"
           type="submit"
           class="w-full h-12 text-lg font-medium"
-          [disabled]="loginForm.invalid || isLoading"
+          [disabled]="registerForm.invalid"
         >
-          <span>Sign In</span>
+          <span>Create Account</span>
         </button>
       </form>
 
       <div class="text-center">
         <p class="text-gray-600">
-          Don't have an account?
+          Already have an account?
           <a
-            routerLink="/auth/register"
+            routerLink="/auth/login"
             class="text-indigo-600 hover:text-indigo-500 font-medium cursor-pointer"
           >
-            Sign up
+            Sign in
           </a>
         </p>
       </div>
@@ -94,20 +105,20 @@ import { LoginRequest } from '../../models/auth.model';
     `,
   ],
 })
-export class LoginFormComponent {
-  loginSubmit = output<LoginRequest>();
+export class RegisterFormComponent {
+  registerSubmit = output<RegisterRequest>();
 
-  loginForm: FormGroup = new FormGroup({
+  registerForm: FormGroup = new FormGroup({
+    name: new FormControl('', [Validators.required, Validators.minLength(2)]),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [
       Validators.required,
-      Validators.minLength(6),
+      Validators.minLength(8),
+      Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/),
     ]),
   });
-  hidePassword = true;
-  isLoading = false;
 
   onSubmit(): void {
-    this.loginSubmit.emit(this.loginForm.value);
+    this.registerSubmit.emit(this.registerForm.value);
   }
 }

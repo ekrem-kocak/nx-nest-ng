@@ -4,7 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-auth-layout',
+  selector: 'eku-store-auth-layout',
   standalone: true,
   imports: [RouterOutlet, MatCardModule, MatIconModule],
   template: `
