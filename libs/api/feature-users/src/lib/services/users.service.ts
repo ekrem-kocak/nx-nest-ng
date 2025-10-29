@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '@nx-nest-ng/core';
+import { PrismaService } from '@nx-nest-ng/api-core';
 import { Prisma, User } from '@prisma/client';
 
 @Injectable()

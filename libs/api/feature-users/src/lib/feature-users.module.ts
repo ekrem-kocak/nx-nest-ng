@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { CoreModule } from '@nx-nest-ng/core';
+import { CoreModule } from '@nx-nest-ng/api-core';
 import { UsersService } from './services';
 
 @Module({

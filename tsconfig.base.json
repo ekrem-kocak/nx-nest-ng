@@ -15,11 +15,11 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@nx-nest-ng/core": ["libs/api/core/src/index.ts"],
+      "@nx-nest-ng/api-core": ["libs/api/core/src/index.ts"],
       "@nx-nest-ng/dto": ["libs/shared/dto/src/index.ts"],
       "@nx-nest-ng/enums": ["libs/shared/enums/src/index.ts"],
-      "@nx-nest-ng/feature-auth": ["libs/api/feature-auth/src/index.ts"],
-      "@nx-nest-ng/feature-users": ["libs/api/feature-users/src/index.ts"],
+      "@nx-nest-ng/api-feature-auth": ["libs/api/feature-auth/src/index.ts"],
+      "@nx-nest-ng/api-feature-users": ["libs/api/feature-users/src/index.ts"],
       "@nx-nest-ng/interfaces": ["libs/shared/interfaces/src/index.ts"]
     }
   },

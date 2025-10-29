@@ -5,8 +5,8 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { PrismaService } from '@nx-nest-ng/core';
-import { UsersService } from '@nx-nest-ng/feature-users';
+import { PrismaService } from '@nx-nest-ng/api-core';
+import { UsersService } from '@nx-nest-ng/api-feature-users';
 import * as bcrypt from 'bcrypt';
 import { randomUUID } from 'crypto';
 

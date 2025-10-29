@@ -7,8 +7,8 @@ import { AuthService } from './auth.service';
 import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 
-import { CoreModule } from '@nx-nest-ng/core';
-import { FeatureUsersModule } from '@nx-nest-ng/feature-users';
+import { CoreModule } from '@nx-nest-ng/api-core';
+import { FeatureUsersModule } from '@nx-nest-ng/api-feature-users';
 
 @Module({
   imports: [
