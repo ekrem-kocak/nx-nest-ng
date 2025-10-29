@@ -3,15 +3,14 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start:api": "nx serve api",
+    "start:api": "nx serve api --skip-nx-cache",
     "build:api": "nx build api",
     "lint:api": "nx lint api",
     "test:api": "nx test api",
-    "start:angular": "nx serve store-admin-portal",
+    "start:angular": "nx serve store-admin-portal --skip-nx-cache",
     "build:angular": "nx build store-admin-portal",
     "lint:angular": "nx lint store-admin-portal",
     "test:angular": "nx test store-admin-portal",
-    "pre-commit": "pnpm build:api && pnpm build:angular",
     "prepare": "husky"
   },
   "private": true,
