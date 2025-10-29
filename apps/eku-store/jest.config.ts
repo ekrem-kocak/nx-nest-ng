@@ -1,8 +1,8 @@
 export default {
-  displayName: 'store-admin-portal',
+  displayName: 'eku-store',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../coverage/apps/store-admin-portal',
+  coverageDirectory: '../../coverage/apps/eku-store',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

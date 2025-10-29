@@ -1,27 +1,27 @@
 {
-  "name": "store-admin-portal",
+  "name": "eku-store",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "prefix": "app",
-  "sourceRoot": "apps/store-admin-portal/src",
+  "sourceRoot": "apps/eku-store/src",
   "tags": [],
   "targets": {
     "build": {
       "executor": "@angular/build:application",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/store-admin-portal",
-        "browser": "apps/store-admin-portal/src/main.ts",
+        "outputPath": "dist/apps/eku-store",
+        "browser": "apps/eku-store/src/main.ts",
         "polyfills": ["zone.js"],
-        "tsConfig": "apps/store-admin-portal/tsconfig.app.json",
+        "tsConfig": "apps/eku-store/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
           {
             "glob": "**/*",
-            "input": "apps/store-admin-portal/public"
+            "input": "apps/eku-store/public"
           }
         ],
-        "styles": ["apps/store-admin-portal/src/styles.scss"]
+        "styles": ["apps/eku-store/src/styles.scss"]
       },
       "configurations": {
         "production": {
@@ -52,10 +52,10 @@
       "executor": "@angular/build:dev-server",
       "configurations": {
         "production": {
-          "buildTarget": "store-admin-portal:build:production"
+          "buildTarget": "eku-store:build:production"
         },
         "development": {
-          "buildTarget": "store-admin-portal:build:development"
+          "buildTarget": "eku-store:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -63,7 +63,7 @@
     "extract-i18n": {
       "executor": "@angular/build:extract-i18n",
       "options": {
-        "buildTarget": "store-admin-portal:build"
+        "buildTarget": "eku-store:build"
       }
     },
     "lint": {
@@ -73,16 +73,16 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/store-admin-portal/jest.config.ts",
-        "tsConfig": "apps/store-admin-portal/tsconfig.spec.json"
+        "jestConfig": "apps/eku-store/jest.config.ts",
+        "tsConfig": "apps/eku-store/tsconfig.spec.json"
       }
     },
     "serve-static": {
       "continuous": true,
       "executor": "@nx/web:file-server",
       "options": {
-        "buildTarget": "store-admin-portal:build",
-        "staticFilePath": "dist/apps/store-admin-portal/browser",
+        "buildTarget": "eku-store:build",
+        "staticFilePath": "dist/apps/eku-store/browser",
         "spa": true
       }
     }
