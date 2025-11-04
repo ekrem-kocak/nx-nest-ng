@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, output } from '@angular/core';
+import { Component, output, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -13,6 +13,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule } from '@angular/router';
+import {
+  EkuErrorStateMatcher,
+  ValidationErrorsPipe,
+} from '@nx-nest-ng/ui-common';
 import { RegisterRequest } from '../../models/auth.model';
 
 @Component({
@@ -28,6 +32,7 @@ import { RegisterRequest } from '../../models/auth.model';
     MatIconModule,
     MatProgressSpinnerModule,
     MatCheckboxModule,
+    ValidationErrorsPipe,
   ],
   template: `
     <div class="space-y-6">
@@ -39,12 +44,20 @@ import { RegisterRequest } from '../../models/auth.model';
       <form
         [formGroup]="registerForm"
         (ngSubmit)="onSubmit()"
-        class="space-y-4"
+        class="space-y-2"
       >
         <mat-form-field>
           <mat-label>Full Name</mat-label>
-          <input matInput type="text" formControlName="name" />
+          <input
+            matInput
+            type="text"
+            formControlName="name"
+            [errorStateMatcher]="matcher()"
+          />
           <mat-icon matSuffix>person</mat-icon>
+          <mat-error>{{
+            registerForm.get('name')?.errors | validationErrors
+          }}</mat-error>
         </mat-form-field>
 
         <mat-form-field>
@@ -54,8 +67,12 @@ import { RegisterRequest } from '../../models/auth.model';
             type="email"
             formControlName="email"
             autocomplete="email"
+            [errorStateMatcher]="matcher()"
           />
           <mat-icon matSuffix>email</mat-icon>
+          <mat-error>{{
+            registerForm.get('email')?.errors | validationErrors
+          }}</mat-error>
         </mat-form-field>
 
         <mat-form-field>
@@ -65,15 +82,20 @@ import { RegisterRequest } from '../../models/auth.model';
             type="password"
             formControlName="password"
             autocomplete="new-password"
+            [errorStateMatcher]="matcher()"
           />
+          <mat-icon matSuffix>lock</mat-icon>
+          <mat-error>{{
+            registerForm.get('password')?.errors | validationErrors
+          }}</mat-error>
         </mat-form-field>
 
         <button
           mat-raised-button
           color="primary"
           type="submit"
-          class="w-full h-12 text-lg font-medium"
-          [disabled]="registerForm.invalid"
+          class="w-full"
+          [disabled]="registerForm.invalid || registerForm.pending"
         >
           <span>Create Account</span>
         </button>
@@ -94,22 +116,18 @@ import { RegisterRequest } from '../../models/auth.model';
   `,
   styles: [
     `
-      :host {
-        display: block;
-        width: 100%;
-
-        mat-form-field {
-          width: 100%;
-        }
+      mat-form-field {
+        @apply w-full;
       }
     `,
   ],
 })
 export class RegisterFormComponent {
+  matcher = signal(new EkuErrorStateMatcher());
   registerSubmit = output<RegisterRequest>();
 
   registerForm: FormGroup = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.minLength(2)]),
+    name: new FormControl('', [Validators.required, Validators.minLength(4)]),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [
       Validators.required,
