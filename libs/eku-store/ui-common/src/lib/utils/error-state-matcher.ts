@@ -11,7 +11,7 @@ export class EkuErrorStateMatcher implements ErrorStateMatcher {
     return !!(
       control &&
       control.invalid &&
-      (control.touched || control.dirty || isSubmitted)
+      ((control.touched && control.dirty) || isSubmitted)
     );
   }
 }
