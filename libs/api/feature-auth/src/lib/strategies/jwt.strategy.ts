@@ -8,7 +8,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
     configService: ConfigService,
-    private readonly usersService: UsersService
+    private readonly usersService: UsersService,
   ) {
     console.log(configService.get<string>('jwt.accessSecret') ?? '');
 

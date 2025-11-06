@@ -28,13 +28,13 @@ export class AuthController {
   async signUp(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
-    @Body() dto: SignUpUserDto
+    @Body() dto: SignUpUserDto,
   ) {
     const { accessToken, cookie } = await this.authService.signUp(
       dto.email,
       dto.password,
       req.headers['user-agent'],
-      req.ip
+      req.ip,
     );
 
     this.setRefreshCookie(res, cookie.value);
@@ -48,13 +48,13 @@ export class AuthController {
   async signIn(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
-    @Body() dto: SignInUserDto
+    @Body() dto: SignInUserDto,
   ) {
     const { accessToken, cookie } = await this.authService.signIn(
       dto.email,
       dto.password,
       req.headers['user-agent'],
-      req.ip
+      req.ip,
     );
     this.setRefreshCookie(res, cookie.value);
     return { accessToken };
@@ -68,7 +68,7 @@ export class AuthController {
     return this.authService.refreshToken(
       req.cookies.rt,
       req.headers['user-agent'],
-      req.ip
+      req.ip,
     );
   }
 

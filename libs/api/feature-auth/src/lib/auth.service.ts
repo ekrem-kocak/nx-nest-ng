@@ -26,7 +26,7 @@ export class AuthService {
     private prismaService: PrismaService,
     private usersService: UsersService,
     private jwtService: JwtService,
-    private configService: ConfigService
+    private configService: ConfigService,
   ) {}
 
   async signUp(email: string, password: string, ua?: string, ip?: string) {
@@ -41,7 +41,7 @@ export class AuthService {
     const { refreshToken, cookie } = await this.issueRefreshToken(
       user.id,
       ua,
-      ip
+      ip,
     );
 
     return { accessToken, refreshToken, cookie };
@@ -59,7 +59,7 @@ export class AuthService {
     const { refreshToken, cookie } = await this.issueRefreshToken(
       user.id,
       ua,
-      ip
+      ip,
     );
 
     return { accessToken, refreshToken, cookie };
@@ -89,7 +89,7 @@ export class AuthService {
   async refreshToken(
     refreshToken: string,
     userAgent?: string,
-    ip?: string
+    ip?: string,
   ): Promise<AuthResponse> {
     return this.rotateRefreshToken(refreshToken, userAgent, ip);
   }
@@ -98,7 +98,7 @@ export class AuthService {
   private async issueRefreshToken(
     userId: string,
     userAgent?: string,
-    ip?: string
+    ip?: string,
   ) {
     const jti = randomUUID();
     const raw = randomUUID() + '.' + randomUUID();
@@ -135,7 +135,7 @@ export class AuthService {
   private async rotateRefreshToken(
     token: string,
     ua?: string,
-    ip?: string
+    ip?: string,
   ): Promise<AuthResponse> {
     const [jti, raw] = token.split('.');
     if (!jti || !raw) throw new UnauthorizedException('Invalid refresh token');
@@ -154,7 +154,7 @@ export class AuthService {
     const { refreshToken, cookie } = await this.issueRefreshToken(
       found.userId,
       ua,
-      ip
+      ip,
     );
     const user = await this.usersService.findById(found.userId);
     if (!user) throw new UnauthorizedException('User not found');

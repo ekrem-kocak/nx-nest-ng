@@ -9,11 +9,11 @@ import { AuthService } from '../auth.service';
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(
   Strategy,
-  'jwt-refresh'
+  'jwt-refresh',
 ) {
   constructor(
     private readonly authService: AuthService,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([(req) => req?.cookies?.rt]),
