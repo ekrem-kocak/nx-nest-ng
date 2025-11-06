@@ -11,6 +11,9 @@
       "options": {
         "jestConfig": "libs/shared/interfaces/jest.config.ts"
       }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
     }
   }
 }
