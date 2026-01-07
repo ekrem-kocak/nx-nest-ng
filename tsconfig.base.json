@@ -14,7 +14,18 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@nx-nest-ng/api-core": ["libs/api/core/src/index.ts"],
+      "@nx-nest-ng/api-feature-auth": ["libs/api/feature-auth/src/index.ts"],
+      "@nx-nest-ng/api-feature-users": ["libs/api/feature-users/src/index.ts"],
+      "@nx-nest-ng/dto": ["libs/shared/dto/src/index.ts"],
+      "@nx-nest-ng/eku-store-feature-auth": [
+        "libs/eku-store/feature-auth/src/index.ts"
+      ],
+      "@nx-nest-ng/enums": ["libs/shared/enums/src/index.ts"],
+      "@nx-nest-ng/interfaces": ["libs/shared/interfaces/src/index.ts"],
+      "@nx-nest-ng/ui-common": ["libs/eku-store/ui-common/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

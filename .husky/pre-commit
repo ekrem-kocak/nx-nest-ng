@@ -1,0 +1,26 @@
+echo "🚀 Pre-commit: Checking affected projects..."
+
+# The base branch to compare against (e.g., main, develop, master)
+BASE_BRANCH="main"
+
+# 1. AFFECTED PROJECTS LINT CHECK (Fast & Necessary)
+# This is crucial for catching Nx 'boundary' (architectural) violations
+# and is very fast.
+echo "🔍 (1/2) Linting affected projects..."
+npx nx affected --target=lint --base=$BASE_BRANCH --parallel=true
+if [ $? -ne 0 ]; then
+  echo "🚫 Error: Lint check failed."
+  exit 1
+fi
+
+# 2. AFFECTED PROJECTS BUILD CHECK (Slow & Safe)
+# Since you don't have tests yet, we use the build command
+# as a substitute for compilation and type safety checks.
+echo "🏗️ (2/2) Building affected projects (in place of tests)..."
+npx nx affected --target=build --base=$BASE_BRANCH --parallel=true
+if [ $? -ne 0 ]; then
+  echo "🚫 Error: Build failed."
+  exit 1
+fi
+
+echo "✅ Pre-commit checks passed. Committing..."

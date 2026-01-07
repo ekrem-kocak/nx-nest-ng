@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
-import { PrismaModule } from '../prisma/prisma.module';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+
+import { CoreModule } from '@nx-nest-ng/api-core';
+import { FeatureAuthModule } from '@nx-nest-ng/api-feature-auth';
 
 @Module({
-  imports: [PrismaModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [FeatureAuthModule, CoreModule],
 })
 export class AppModule {}

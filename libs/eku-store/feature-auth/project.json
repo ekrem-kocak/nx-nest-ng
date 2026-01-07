@@ -1,0 +1,21 @@
+{
+  "name": "eku-store-feature-auth",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/eku-store/feature-auth/src",
+  "prefix": "eku-store",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/eku-store/feature-auth/jest.config.ts",
+        "tsConfig": "libs/eku-store/feature-auth/tsconfig.spec.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

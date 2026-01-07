@@ -14,10 +14,73 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model Product {
-  id          String  @id @default(uuid())
-  name        String
-  description String?
-  price       Decimal
-  stock       Int
+enum WorkspaceRole {
+  ADMIN // Workspace'i yönetir, üye davet eder
+  MEMBER // Workspace içindeki verileri yönetir
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Bir kullanıcı birden fazla workspace'e üye olabilir.
+  // Bu, WorkspaceMember modeli aracılığıyla kurulan ilişkidir
+  workspaces   WorkspaceMember[]
+  RefreshToken RefreshToken[]
+}
+
+// "Kiracı" modelimiz. Her şirket/proje bir Workspace'tir.
+model Workspace {
+  id        String   @id @default(cuid())
+  name      String // Örn: "Acme Şirketi"
+  slug      String   @unique // Örn: "acme-sirketi"
+  createdAt DateTime @default(now())
+
+  // YENİ ALAN: Hash'lenmiş refresh token'ı burada saklayacağız
+  // Opsiyonel (?) yaptık, çünkü kullanıcı logout olduğunda null yapacağız.
+
+  // Bir workspace'in birden fazla üyesi olabilir
+  members WorkspaceMember[]
+
+  // Bu workspace'e ait diğer tüm veriler buraya bağlanacak
+  // Örnek:
+  // products  Product[]
+  // orders    Order[]
+}
+
+// User ve Workspace arasındaki ÇOK-ÇOK ilişkiyi kuran ara tablo
+model WorkspaceMember {
+  id String @id @default(cuid())
+
+  role WorkspaceRole @default(MEMBER) // Bu üyenin bu workspace'teki rolü
+
+  // User ilişkisi
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Workspace ilişkisi
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  // Bir kullanıcı bir workspace'e sadece bir kez üye olabilir
+  @@unique([userId, workspaceId])
+}
+
+model RefreshToken {
+  id        Int       @id @default(autoincrement())
+  jti       String    @unique
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String
+  userAgent String?
+  ip        String?
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([userId])
 }
